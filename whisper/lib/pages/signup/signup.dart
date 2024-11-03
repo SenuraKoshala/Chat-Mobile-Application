@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whisper/pages/homePages/home.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -18,27 +19,72 @@ class _SignUpState extends State<SignUp> {
               height: 25,
             ),
             Expanded(child: Image.asset('assets/logo_black.png')),
-            const Expanded(
+            Expanded(
                 flex: 2,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
+                child: Container(
+                  width: 300.0,
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(
+                            0.5), // Color of the shadow with opacity
+                        spreadRadius: 5, // Extent of the shadow spread
+                        blurRadius: 10, // Softness of the shadow
+                        offset:
+                            const Offset(0, 5), // Offset in x and y direction
+                      ),
+                    ],
+                  ),
                   child: DefaultTabController(
                       length: 2,
                       child: Scaffold(
-                        body: TabBar(
-                            labelColor: Colors.black,
-                            unselectedLabelColor: Colors.grey,
-                            indicatorColor: Colors.blue,
-                            tabs: [
-                              Tab(
-                                child: Text('Login'),
-                              ),
-                              Tab(
-                                child: Text('SignUp'),
-                              )
-                            ]),
+                        body: Column(
+                          children: [
+                            const Expanded(
+                                child: TabBar(
+                                    labelColor: Colors.black,
+                                    unselectedLabelColor: Colors.grey,
+                                    indicatorColor: Colors.blue,
+                                    tabs: [
+                                  Tab(
+                                    child: Text('Login'),
+                                  ),
+                                  Tab(
+                                    child: Text('SignUp'),
+                                  )
+                                ])),
+                            Expanded(
+                                flex: 5,
+                                child: TabBarView(children: [
+                                  Form(
+                                      child: Column(
+                                    children: [
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Home()));
+                                          },
+                                          child: const Text('LOGIN'))
+                                    ],
+                                  )),
+                                  Form(
+                                      child: Column(
+                                    children: [
+                                      ElevatedButton(
+                                          onPressed: () {},
+                                          child: const Text('SIGNUP'))
+                                    ],
+                                  ))
+                                ]))
+                          ],
+                        ),
                       )),
-                ))
+                )),
+            const Expanded(
+                child: Padding(padding: EdgeInsets.only(bottom: 50.0)))
           ],
         ),
       ),
