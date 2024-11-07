@@ -53,7 +53,7 @@ class EntryPage extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => const SignUp()))
                         },
-                    child: Text('Slide to Start Now'))
+                    child: const Text('Slide to Start Now'))
               ],
             ))
           ],

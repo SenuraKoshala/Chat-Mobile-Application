@@ -15,7 +15,7 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         appBar: AppBar(
           leading: Padding(
-            padding: EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(0.0),
             child: SizedBox(
               width: 40,
               height: 40,
@@ -26,8 +26,8 @@ class _HomeState extends State<Home> {
             ),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-            IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))
+            IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
           ],
           bottom: const TabBar(
               labelColor: Color(0xFF38B6FF),
