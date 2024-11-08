@@ -9,85 +9,133 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  
+  // Navigation function for the login button
+  void _navigateToHome() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Home()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           children: [
-            const SizedBox(
-              height: 25,
-            ),
-            Expanded(child: Image.asset('assets/logo_black.png')),
+            SizedBox(height: 25),
+            Expanded(child: LogoImage()),
+            Expanded(flex: 2, child: AuthContainer()),
             Expanded(
-                flex: 2,
-                child: Container(
-                  width: 300.0,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(
-                            0.5), // Color of the shadow with opacity
-                        spreadRadius: 5, // Extent of the shadow spread
-                        blurRadius: 10, // Softness of the shadow
-                        offset:
-                            const Offset(0, 5), // Offset in x and y direction
-                      ),
-                    ],
-                  ),
-                  child: DefaultTabController(
-                      length: 2,
-                      child: Scaffold(
-                        body: Column(
-                          children: [
-                            const Expanded(
-                                child: TabBar(
-                                    labelColor: Colors.black,
-                                    unselectedLabelColor: Colors.grey,
-                                    indicatorColor: Colors.blue,
-                                    tabs: [
-                                  Tab(
-                                    child: Text('Login'),
-                                  ),
-                                  Tab(
-                                    child: Text('SignUp'),
-                                  )
-                                ])),
-                            Expanded(
-                                flex: 5,
-                                child: TabBarView(children: [
-                                  Form(
-                                      child: Column(
-                                    children: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Home()));
-                                          },
-                                          child: const Text('LOGIN'))
-                                    ],
-                                  )),
-                                  Form(
-                                      child: Column(
-                                    children: [
-                                      ElevatedButton(
-                                          onPressed: () {},
-                                          child: const Text('SIGNUP'))
-                                    ],
-                                  ))
-                                ]))
-                          ],
-                        ),
-                      )),
-                )),
-            const Expanded(
-                child: Padding(padding: EdgeInsets.only(bottom: 50.0)))
+              child: Padding(padding: EdgeInsets.only(bottom: 50.0)),
+            ),
           ],
         ),
       ),
     );
   }
 }
+
+// Separate widget for the logo image
+class LogoImage extends StatelessWidget {
+  const LogoImage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset('assets/logo_black.png');
+  }
+}
+
+// Separate widget for the authentication container with tab view
+class AuthContainer extends StatelessWidget {
+  const AuthContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300.0,
+      decoration: authContainerDecoration,
+      child: const DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          body: Column(
+            children: [
+              Expanded(child: AuthTabBar()),
+              Expanded(flex: 5, child: AuthTabBarView()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Separate widget for the tab bar
+class AuthTabBar extends StatelessWidget {
+  const AuthTabBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const TabBar(
+      labelColor: Colors.black,
+      unselectedLabelColor: Colors.grey,
+      indicatorColor: Colors.blue,
+      tabs: [
+        Tab(child: Text('Login')),
+        Tab(child: Text('SignUp')),
+      ],
+    );
+  }
+}
+
+// Separate widget for the tab bar view with forms
+class AuthTabBarView extends StatelessWidget {
+  const AuthTabBarView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TabBarView(
+      children: [
+        Form(
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to Home on Login
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Home()),
+                  );
+                },
+                child: const Text('LOGIN'),
+              ),
+            ],
+          ),
+        ),
+        Form(
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: const Text('SIGNUP'),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// Styling constants
+final authContainerDecoration = BoxDecoration(
+  boxShadow: [
+    BoxShadow(
+      color: Colors.grey.withOpacity(0.5),
+      spreadRadius: 5,
+      blurRadius: 10,
+      offset: const Offset(0, 5),
+    ),
+  ],
+);
