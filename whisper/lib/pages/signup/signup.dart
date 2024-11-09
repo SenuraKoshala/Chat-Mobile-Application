@@ -97,9 +97,29 @@ class AuthTabBarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return TabBarView(
       children: [
+        // Login Form
         Form(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter your email',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                  ),
+                  obscureText: true,
+                ),
+              ),
               ElevatedButton(
                 onPressed: () {
                   // Navigate to Home on Login
@@ -113,11 +133,51 @@ class AuthTabBarView extends StatelessWidget {
             ],
           ),
         ),
+        // Signup Form
         Form(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    hintText: 'Enter your name',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Mobile Number',
+                    hintText: 'Enter your mobile number',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter your email',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                  ),
+                  obscureText: true,
+                ),
+              ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Action for signup button
+                },
                 child: const Text('SIGNUP'),
               ),
             ],
