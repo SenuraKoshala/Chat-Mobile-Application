@@ -54,7 +54,18 @@ class AuthContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 300.0,
-      decoration: authContainerDecoration,
+      decoration:  BoxDecoration(
+        color: Colors.white, // Background color
+        borderRadius: BorderRadius.circular(10), // Border radius
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 5,
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: const DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -226,14 +237,3 @@ class AuthTabBarView extends StatelessWidget {
   }
 }
 
-// Styling constants
-final authContainerDecoration = BoxDecoration(
-  boxShadow: [
-    BoxShadow(
-      color: Colors.grey.withOpacity(0.5),
-      spreadRadius: 5,
-      blurRadius: 10,
-      offset: const Offset(0, 5),
-    ),
-  ],
-);
