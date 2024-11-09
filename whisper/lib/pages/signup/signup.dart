@@ -9,7 +9,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  
   // Navigation function for the login button
   void _navigateToHome() {
     Navigator.push(
@@ -80,7 +79,7 @@ class AuthTabBar extends StatelessWidget {
     return const TabBar(
       labelColor: Colors.black,
       unselectedLabelColor: Colors.grey,
-      indicatorColor: Colors.blue,
+      indicatorColor: Color.fromRGBO(56, 182, 255, 1),
       tabs: [
         Tab(child: Text('Login')),
         Tab(child: Text('SignUp')),
@@ -102,7 +101,8 @@ class AuthTabBarView extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Email',
@@ -111,7 +111,8 @@ class AuthTabBarView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Password',
@@ -128,7 +129,22 @@ class AuthTabBarView extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const Home()),
                   );
                 },
-                child: const Text('LOGIN'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      const Color.fromRGBO(56, 182, 255, 1), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12), // Padding inside the button
+                ),
+                child: const Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold), // Text style
+                ),
               ),
             ],
           ),
@@ -138,7 +154,8 @@ class AuthTabBarView extends StatelessWidget {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Name',
@@ -147,7 +164,8 @@ class AuthTabBarView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Mobile Number',
@@ -156,7 +174,8 @@ class AuthTabBarView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Email',
@@ -165,7 +184,8 @@ class AuthTabBarView extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
                 child: TextFormField(
                   decoration: const InputDecoration(
                     labelText: 'Password',
@@ -176,9 +196,27 @@ class AuthTabBarView extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // Action for signup button
+                  // Navigate to Home on Login
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Home()),
+                  );
                 },
-                child: const Text('SIGNUP'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(56, 182, 255, 1), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12), // Padding inside the button
+                ),
+                child: const Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold), // Text style
+                ),
               ),
             ],
           ),
