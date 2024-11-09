@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whisper/pages/new_contact_page.dart'; // Import the new contact page
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -8,7 +9,6 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  // List of all contacts
   final List<Contact> allContacts = [
     Contact(name: 'John Doe', imageUrl: 'https://via.placeholder.com/150'),
     Contact(name: 'Jane Smith', imageUrl: 'https://via.placeholder.com/150'),
@@ -19,10 +19,7 @@ class _ContactsPageState extends State<ContactsPage> {
     // Add more contacts as needed
   ];
 
-  // List of filtered contacts
   List<Contact> filteredContacts = [];
-
-  // Search query
   String query = '';
 
   @override
@@ -31,7 +28,6 @@ class _ContactsPageState extends State<ContactsPage> {
     filteredContacts = allContacts;
   }
 
-  // Function to filter contacts based on search query
   void _filterContacts(String query) {
     setState(() {
       this.query = query;
@@ -47,13 +43,12 @@ class _ContactsPageState extends State<ContactsPage> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          // Styled Header Box
+          // AppBar with search
           Container(
-            color: Colors.grey[100], // Light ash color
+            color: Colors.grey[100],
             child: SafeArea(
               child: Column(
                 children: [
-                  // AppBar with Search functionality
                   AppBar(
                     backgroundColor: Colors.grey[100],
                     elevation: 0,
@@ -62,7 +57,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       onPressed: () => Navigator.pop(context),
                     ),
                     title: TextField(
-                      onChanged: _filterContacts, // Trigger search
+                      onChanged: _filterContacts,
                       decoration: const InputDecoration(
                         hintText: 'Search Contacts...',
                         hintStyle: TextStyle(color: Colors.black87),
@@ -71,22 +66,16 @@ class _ContactsPageState extends State<ContactsPage> {
                       ),
                       style: const TextStyle(color: Colors.black87),
                     ),
-                    actions: const [
-                      IconButton(
-                        icon: Icon(Icons.search, color: Colors.black87),
-                        onPressed: null, // Search is handled by TextField
-                      ),
-                    ],
                   ),
                 ],
               ),
             ),
           ),
           
-          // Separate Section for "New Contact" and "New Group"
+          // "New Contact" section from previous implementation
           Container(
-            color: Colors.grey[200], // Slightly darker grey for distinction
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            color: Colors.grey[100],
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
               children: [
                 ListTile(
@@ -99,7 +88,11 @@ class _ContactsPageState extends State<ContactsPage> {
                     style: TextStyle(fontSize: 16),
                   ),
                   onTap: () {
-                    // Handle new contact
+                    // Navigate to the New Contact page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const NewContactPage()),
+                    );
                   },
                 ),
                 ListTile(
@@ -133,23 +126,15 @@ class _ContactsPageState extends State<ContactsPage> {
             ),
           ),
 
-          // Contacts list (filtered based on search query)
+          // List of filtered contacts
           Expanded(
             child: ListView(
-              children: filteredContacts.isNotEmpty
-                  ? filteredContacts
-                      .map(
-                        (contact) => ContactListItem(
-                          name: contact.name,
-                          imageUrl: contact.imageUrl,
-                        ),
-                      )
-                      .toList()
-                  : [
-                      const Center(
-                        child: Text('No contacts found'),
-                      ),
-                    ],
+              children: filteredContacts
+                  .map((contact) => ContactListItem(
+                        name: contact.name,
+                        imageUrl: contact.imageUrl,
+                      ))
+                  .toList(),
             ),
           ),
         ],
@@ -158,7 +143,6 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 }
 
-// Contact class to store contact information
 class Contact {
   final String name;
   final String imageUrl;
@@ -179,18 +163,11 @@ class ContactListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       leading: CircleAvatar(
         backgroundImage: AssetImage('assets/default_avatar.png'),
-        child: Text(name[0]), // Shows first letter if image fails to load
+        child: Text(name[0]),
       ),
-      title: Text(
-        name,
-        style: const TextStyle(fontSize: 16),
-      ),
-      onTap: () {
-        // Handle contact selection
-      },
+      title: Text(name),
     );
   }
 }
