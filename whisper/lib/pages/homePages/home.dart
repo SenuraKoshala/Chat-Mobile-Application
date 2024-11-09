@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whisper/pages/homePages/selectcontact.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -44,8 +45,26 @@ class _HomeState extends State<Home> {
                 )
               ]),
         ),
-        body: const TabBarView(
-            children: [Text('Chats'), Text('Groups'), Text('Calls')]),
+        body: TabBarView(children: [
+          Scaffold(
+            body: const Text('Chats'),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const SelectContact()))
+              },
+              tooltip: 'New Contact',
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              child: const Icon(Icons.add),
+            ),
+          ),
+          const Text('Groups'),
+          const Text('Calls')
+        ]),
       ),
     );
   }
