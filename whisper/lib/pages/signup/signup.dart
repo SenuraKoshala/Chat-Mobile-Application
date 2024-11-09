@@ -54,15 +54,16 @@ class AuthContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 300.0,
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white, // Background color
-        borderRadius: BorderRadius.circular(10), // Border radius
+        borderRadius: BorderRadius.circular(10), // Border radius for the box
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 5,
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            color: Colors.grey.withOpacity(0.1), // Shadow color
+            spreadRadius: 5, // How much the shadow spreads
+            blurRadius: 10, // How blurry the shadow is
+            offset:
+                const Offset(0, 5), // Shadow position (move shadow downward)
           ),
         ],
       ),
@@ -214,7 +215,8 @@ class AuthTabBarView extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(56, 182, 255, 1), // Button color
+                  backgroundColor:
+                      const Color.fromRGBO(56, 182, 255, 1), // Button color
                   foregroundColor: Colors.white, // Text color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30), // Rounded corners
@@ -224,7 +226,7 @@ class AuthTabBarView extends StatelessWidget {
                       vertical: 12), // Padding inside the button
                 ),
                 child: const Text(
-                  'LOGIN',
+                  'SIGNUP',
                   style: TextStyle(
                       fontSize: 16, fontWeight: FontWeight.bold), // Text style
                 ),
@@ -236,4 +238,3 @@ class AuthTabBarView extends StatelessWidget {
     );
   }
 }
-

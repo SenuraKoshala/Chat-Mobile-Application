@@ -10,11 +10,35 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
-    return const DefaultTabController(
+    return DefaultTabController(
       length: 3,
-      child: Scaffold(
-        appBar: HomeAppBar(),
-        body: HomeTabBarView(),
+      child: Builder(
+        builder: (context) {
+          final TabController tabController = DefaultTabController.of(context);
+          return Scaffold(
+            appBar: const HomeAppBar(),
+            body: const HomeTabBarView(),
+            floatingActionButton: AnimatedBuilder(
+              animation: tabController,
+              builder: (context, child) {
+                return tabController.index == 0
+                    ? FloatingActionButton(
+                        onPressed: () {
+                          // Add action for new chat
+                        },
+                        backgroundColor: const Color(0xFF38B6FF),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      )
+                    : const SizedBox.shrink();
+              },
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          );
+        },
       ),
     );
   }
