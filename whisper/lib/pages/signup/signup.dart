@@ -9,85 +9,232 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  // Navigation function for the login button
+  void _navigateToHome() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Home()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Column(
           children: [
-            const SizedBox(
-              height: 25,
-            ),
-            Expanded(child: Image.asset('assets/logo_black.png')),
+            SizedBox(height: 25),
+            Expanded(child: LogoImage()),
+            Expanded(flex: 2, child: AuthContainer()),
             Expanded(
-                flex: 2,
-                child: Container(
-                  width: 300.0,
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(
-                            0.5), // Color of the shadow with opacity
-                        spreadRadius: 5, // Extent of the shadow spread
-                        blurRadius: 10, // Softness of the shadow
-                        offset:
-                            const Offset(0, 5), // Offset in x and y direction
-                      ),
-                    ],
-                  ),
-                  child: DefaultTabController(
-                      length: 2,
-                      child: Scaffold(
-                        body: Column(
-                          children: [
-                            const Expanded(
-                                child: TabBar(
-                                    labelColor: Colors.black,
-                                    unselectedLabelColor: Colors.grey,
-                                    indicatorColor: Colors.blue,
-                                    tabs: [
-                                  Tab(
-                                    child: Text('Login'),
-                                  ),
-                                  Tab(
-                                    child: Text('SignUp'),
-                                  )
-                                ])),
-                            Expanded(
-                                flex: 5,
-                                child: TabBarView(children: [
-                                  Form(
-                                      child: Column(
-                                    children: [
-                                      ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Home()));
-                                          },
-                                          child: const Text('LOGIN'))
-                                    ],
-                                  )),
-                                  Form(
-                                      child: Column(
-                                    children: [
-                                      ElevatedButton(
-                                          onPressed: () {},
-                                          child: const Text('SIGNUP'))
-                                    ],
-                                  ))
-                                ]))
-                          ],
-                        ),
-                      )),
-                )),
-            const Expanded(
-                child: Padding(padding: EdgeInsets.only(bottom: 50.0)))
+              child: Padding(padding: EdgeInsets.only(bottom: 50.0)),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+// Separate widget for the logo image
+class LogoImage extends StatelessWidget {
+  const LogoImage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset('assets/logo_black.png');
+  }
+}
+
+// Separate widget for the authentication container with tab view
+class AuthContainer extends StatelessWidget {
+  const AuthContainer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300.0,
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color
+        borderRadius: BorderRadius.circular(10), // Border radius for the box
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1), // Shadow color
+            spreadRadius: 5, // How much the shadow spreads
+            blurRadius: 10, // How blurry the shadow is
+            offset:
+                const Offset(0, 5), // Shadow position (move shadow downward)
+          ),
+        ],
+      ),
+      child: const DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          body: Column(
+            children: [
+              Expanded(child: AuthTabBar()),
+              Expanded(flex: 5, child: AuthTabBarView()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// Separate widget for the tab bar
+class AuthTabBar extends StatelessWidget {
+  const AuthTabBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const TabBar(
+      labelColor: Colors.black,
+      unselectedLabelColor: Colors.grey,
+      indicatorColor: Color.fromRGBO(56, 182, 255, 1),
+      tabs: [
+        Tab(child: Text('Login')),
+        Tab(child: Text('SignUp')),
+      ],
+    );
+  }
+}
+
+// Separate widget for the tab bar view with forms
+class AuthTabBarView extends StatelessWidget {
+  const AuthTabBarView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return TabBarView(
+      children: [
+        // Login Form
+        Form(
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter your email',
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                  ),
+                  obscureText: true,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to Home on Login
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Home()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      const Color.fromRGBO(56, 182, 255, 1), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12), // Padding inside the button
+                ),
+                child: const Text(
+                  'LOGIN',
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold), // Text style
+                ),
+              ),
+            ],
+          ),
+        ),
+        // Signup Form
+        Form(
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Name',
+                    hintText: 'Enter your name',
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Mobile Number',
+                    hintText: 'Enter your mobile number',
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    hintText: 'Enter your email',
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Password',
+                    hintText: 'Enter your password',
+                  ),
+                  obscureText: true,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to Home on Login
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Home()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      const Color.fromRGBO(56, 182, 255, 1), // Button color
+                  foregroundColor: Colors.white, // Text color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30), // Rounded corners
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12), // Padding inside the button
+                ),
+                child: const Text(
+                  'SIGNUP',
+                  style: TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold), // Text style
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
