@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whisper/pages/contacts_page.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -24,7 +25,12 @@ class _HomeState extends State<Home> {
                 return tabController.index == 0
                     ? FloatingActionButton(
                         onPressed: () {
-                          // Add action for new chat
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ContactsPage(),
+                            ),
+                          );
                         },
                         backgroundColor: const Color(0xFF38B6FF),
                         child: const Icon(
