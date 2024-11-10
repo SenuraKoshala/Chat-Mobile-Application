@@ -200,11 +200,11 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                   onPressed: () {
                     if (_formKeyLogin.currentState!.validate()) {
                       // Navigate to Home on Login
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Home()),
-                      );
                     }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Home()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
@@ -353,11 +353,11 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                   onPressed: () {
                     if (_formKeySignup.currentState!.validate()) {
                       // Navigate to Home on Login
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const Home()),
-                      );
                     }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Home()),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
