@@ -1,7 +1,6 @@
 // lib/pages/chat/chat_list_view.dart
 import 'package:flutter/material.dart';
 import 'chat_item.dart';
-import 'chat_detail_page.dart';
 //import 'package:intl/intl.dart'; //need to have intl: ^0.18.0
 
 class ChatListView extends StatelessWidget {
