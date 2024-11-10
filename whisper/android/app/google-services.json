@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "510545472682",
+    "project_id": "whisper-chat-mobile-project",
+    "storage_bucket": "whisper-chat-mobile-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510545472682:android:3b5fea1f50fda572ab74d3",
+        "android_client_info": {
+          "package_name": "com.example.whisper"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6cA_DoxcO_0p3mgCfBCuzA9woaLiNTCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:510545472682:android:bf7e05bfa24fb5f9ab74d3",
+        "android_client_info": {
+          "package_name": "com.whisper.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD6cA_DoxcO_0p3mgCfBCuzA9woaLiNTCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
