@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/homePages/home.dart';
+import 'package:whisper/pages/signup/otpverification.dart';
+
+FirebaseFirestore db = FirebaseFirestore.instance;
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -198,9 +203,8 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKeyLogin.currentState!.validate()) {
-                      // Navigate to Home on Login
-                    }
+                    if (_formKeyLogin.currentState!.validate()) {}
+                    // Navigate to Home on Login
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => const Home()),
@@ -350,14 +354,106 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKeySignup.currentState!.validate()) {
-                      // Navigate to Home on Login
+                      try {
+                        UserCredential userCredential = await FirebaseAuth
+                            .instance
+                            .createUserWithEmailAndPassword(
+                                email: signupEmailController.text,
+                                password: signupPasswordController.text);
+
+                        //Sending email verification to the user
+                        User? user = FirebaseAuth.instance.currentUser;
+                        if (user != null && !user.emailVerified) {
+                          print('Hello from email verification');
+                          await user.sendEmailVerification();
+                          await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Email Verification"),
+                                content: const Text(
+                                    "A verification email has been sent to your email address. Please check your inbox and verify your email."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Otpverification()),
+                                      );
+                                    },
+                                    child: const Text("OK"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+
+                        print('Hello fro cloud firestore');
+
+                        String uid = userCredential.user!.uid;
+                        // Add the user information to Firestore
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(uid)
+                            .set({
+                          'name': signupNameController.text,
+                          'mobileNumber': signupPhoneController.text,
+                          'email': signupEmailController.text,
+                          'createdAt': FieldValue
+                              .serverTimestamp(), // track account creation time
+                        });
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'email-already-in-use') {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Registration Failed"),
+                                content: const Text(
+                                    "The email address is already registered. Please use a different email or try logging in."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text("OK"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Registration Failed"),
+                                content: Text("Error: ${e.message}"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text("OK"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      } catch (e) {
+                        print('Failed to save registration details: $e');
+                      }
                     }
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
