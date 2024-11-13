@@ -164,7 +164,7 @@ class ContactListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: AssetImage('assets/default_avatar.png'),
+        backgroundImage: const AssetImage('assets/default_avatar.png'),
         child: Text(name[0]),
       ),
       title: Text(name),
