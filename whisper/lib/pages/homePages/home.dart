@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/chat/chat_list_view.dart';
 import 'package:whisper/pages/contacts_page.dart';
+import 'package:whisper/pages/profile/edit_profile.dart'; 
+
+// Styling constants
+const tabBarLabelColor = Color(0xFF38B6FF);
+const tabBarIndicatorColor = Color(0xFF38B6FF);
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +15,54 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final TextEditingController _searchController = TextEditingController();
+  bool _isSearching = false;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _startSearch() {
+    setState(() {
+      _isSearching = true;
+    });
+  }
+
+  void _stopSearch() {
+    setState(() {
+      _isSearching = false;
+      _searchController.clear();
+    });
+  }
+
+  void _handleSearch(String query) {
+    // Implement your search logic here
+    // You can filter your chat list based on the query
+    // and update the UI accordingly
+  }
+
+  void _handleMenuSelection(String value, BuildContext context) {
+    switch (value) {
+      case 'edit_profile':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EditProfile()),
+        );
+        break;
+      case 'favorite_chats':
+        // Navigator.pushNamed(context, '/favorite-chats');
+        break;
+      case 'settings':
+        // Navigator.pushNamed(context, '/settings');
+        break;
+      case 'report_issue':
+        // Navigator.pushNamed(context, '/report-issue');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -18,7 +71,67 @@ class _HomeState extends State<Home> {
         builder: (context) {
           final TabController tabController = DefaultTabController.of(context);
           return Scaffold(
-            appBar: const HomeAppBar(),
+            appBar: PreferredSize(
+              preferredSize: const Size.fromHeight(100),
+              child: AppBar(
+                leading: _isSearching
+                    ? IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        onPressed: _stopSearch,
+                      )
+                    : const AppLogo(),
+                title: _isSearching
+                    ? TextField(
+                        controller: _searchController,
+                        decoration: const InputDecoration(
+                          hintText: 'Search...',
+                          border: InputBorder.none,
+                        ),
+                        onChanged: _handleSearch,
+                      )
+                    : null,
+                actions: [
+                  IconButton(
+                    icon: Icon(_isSearching ? Icons.clear : Icons.search),
+                    onPressed: _isSearching ? _stopSearch : _startSearch,
+                  ),
+                  if (!_isSearching)
+                    PopupMenuButton<String>(
+                      icon: const Icon(Icons.more_vert),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      position: PopupMenuPosition.under,
+                      elevation: 3,
+                      offset: const Offset(0, 0), // Adjust this to position the menu
+                      itemBuilder: (BuildContext context) => [
+                        _buildPopupMenuItem(
+                          value: 'edit_profile',
+                          icon: Icons.person,
+                          text: 'Edit Profile',
+                        ),
+                        _buildPopupMenuItem(
+                          value: 'favorite_chats',
+                          icon: Icons.favorite,
+                          text: 'Favorite Chats',
+                        ),
+                        _buildPopupMenuItem(
+                          value: 'settings',
+                          icon: Icons.settings,
+                          text: 'Settings',
+                        ),
+                        _buildPopupMenuItem(
+                          value: 'report_issue',
+                          icon: Icons.report_problem,
+                          text: 'Report an Issue',
+                        ),
+                      ],
+                      onSelected: (String value) => _handleMenuSelection(value, context),
+                    ),
+                ],
+                bottom: _isSearching ? null : const HomeTabBar(),
+              ),
+            ),
             body: const HomeTabBarView(),
             floatingActionButton: AnimatedBuilder(
               animation: tabController,
@@ -49,26 +162,23 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
-// Separate widget for the AppBar
-class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const HomeAppBar({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return AppBar(
-      leading: const AppLogo(),
-      actions: const [
-        IconButton(onPressed: _onSearchPressed, icon: Icon(Icons.search)),
-        IconButton(onPressed: _onMorePressed, icon: Icon(Icons.more_vert)),
-      ],
-      bottom: const HomeTabBar(),
+  PopupMenuItem<String> _buildPopupMenuItem({
+    required String value,
+    required IconData icon,
+    required String text,
+  }) {
+    return PopupMenuItem<String>(
+      value: value,
+      child: Row(
+        children: [
+          Icon(icon, color: const Color(0xFF38B6FF), size: 20),
+          const SizedBox(width: 12),
+          Text(text),
+        ],
+      ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(100);
 }
 
 // Separate widget for the logo
@@ -126,17 +236,4 @@ class HomeTabBarView extends StatelessWidget {
       ],
     );
   }
-}
-
-// Styling constants
-const tabBarLabelColor = Color(0xFF38B6FF);
-const tabBarIndicatorColor = Color(0xFF38B6FF);
-
-// Functions for button actions
-void _onSearchPressed() {
-  // Action for search button
-}
-
-void _onMorePressed() {
-  // Action for more button
 }
