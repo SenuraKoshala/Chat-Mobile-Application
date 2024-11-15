@@ -1,5 +1,6 @@
 // lib/pages/chat/chat_header.dart
 import 'package:flutter/material.dart';
+import '../profile/chat_profile_page.dart';
 
 class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
   final Map<String, dynamic> chatData;
@@ -9,6 +10,15 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
     required this.chatData,
   });
 
+  void _navigateToProfile(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChatProfilePage(userData: chatData),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -16,32 +26,35 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
         icon: const Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context),
       ),
-      title: Row(
-        children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(chatData['image']),
-            radius: 20,
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  chatData['name'],
-                  style: const TextStyle(fontSize: 16),
-                ),
-                Text(
-                  'Online',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.grey[300],
-                  ),
-                ),
-              ],
+      title: GestureDetector(
+        onTap: () => _navigateToProfile(context),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: AssetImage(chatData['image']),
+              radius: 20,
             ),
-          ),
-        ],
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    chatData['name'],
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'Online',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey[300],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
         IconButton(
@@ -61,14 +74,12 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
   }
 
   void _handleVideoCall(BuildContext context) {
-    // Implement video call functionality
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Starting video call...')),
     );
   }
 
   void _handleVoiceCall(BuildContext context) {
-    // Implement voice call functionality
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Starting voice call...')),
     );
@@ -85,7 +96,7 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
             title: const Text('View Profile'),
             onTap: () {
               Navigator.pop(context);
-              // Implement view profile
+              _navigateToProfile(context);
             },
           ),
           ListTile(
