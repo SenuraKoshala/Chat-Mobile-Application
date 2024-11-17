@@ -366,7 +366,6 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                         //Sending email verification to the user
                         User? user = FirebaseAuth.instance.currentUser;
                         if (user != null && !user.emailVerified) {
-                          print('Hello from email verification');
                           await user.sendEmailVerification();
                           await showDialog(
                             context: context,
@@ -394,8 +393,6 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                             },
                           );
                         }
-
-                        print('Hello fro cloud firestore');
 
                         String uid = userCredential.user!.uid;
                         // Add the user information to Firestore

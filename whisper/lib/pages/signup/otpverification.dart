@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,21 @@ class _OtpverificationState extends State<Otpverification> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('OTP Verification'),
+        leading: BackButton(
+          onPressed: () async {
+            User? user = FirebaseAuth.instance.currentUser;
+
+            if (user != null && !user.emailVerified) {
+              await FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid)
+                  .delete();
+
+              await user.delete(); // Deletes the user
+            }
+            Navigator.pop(context); // Default back navigation
+          },
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
