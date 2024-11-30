@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/new_contact_page.dart'; // Import the new contact page
+import 'package:whisper/pages/new_group_page.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -32,7 +33,8 @@ class _ContactsPageState extends State<ContactsPage> {
     setState(() {
       this.query = query;
       filteredContacts = allContacts
-          .where((contact) => contact.name.toLowerCase().contains(query.toLowerCase()))
+          .where((contact) =>
+              contact.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
   }
@@ -71,7 +73,7 @@ class _ContactsPageState extends State<ContactsPage> {
               ),
             ),
           ),
-          
+
           // "New Contact" section from previous implementation
           Container(
             color: Colors.grey[100],
@@ -91,7 +93,8 @@ class _ContactsPageState extends State<ContactsPage> {
                     // Navigate to the New Contact page
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const NewContactPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const NewContactPage()),
                     );
                   },
                 ),
@@ -106,6 +109,11 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   onTap: () {
                     // Handle new group
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const NewGroupPage()),
+                    );
                   },
                 ),
               ],
