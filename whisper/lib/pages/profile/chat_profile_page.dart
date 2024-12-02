@@ -41,7 +41,7 @@ class ChatProfilePage extends StatelessWidget {
                         backgroundImage: AssetImage(userData['image']),
                       ),
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.blue,
                           shape: BoxShape.circle,
                         ),
@@ -122,7 +122,7 @@ class ChatProfilePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         // Replace with actual media items
-                        child: Icon(Icons.image),
+                        child: const Icon(Icons.image),
                       );
                     },
                   ),

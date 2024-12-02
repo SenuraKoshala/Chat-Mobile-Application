@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/contacts_page.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
 
 // Import the Group and GroupManager
 import 'group_list_view.dart';
 
 class NewGroupPage extends StatefulWidget {
-  const NewGroupPage({Key? key}) : super(key: key);
+  const NewGroupPage({super.key});
 
   @override
   State<NewGroupPage> createState() => _NewGroupPageState();
@@ -25,8 +23,6 @@ class _NewGroupPageState extends State<NewGroupPage> {
 
   List<Contact> selectedContacts = [];
   final TextEditingController _groupNameController = TextEditingController();
-  XFile? _imageFile;
-  final ImagePicker _picker = ImagePicker();
 
   // Create an instance of GroupManager
   final GroupManager _groupManager = GroupManager();
@@ -45,21 +41,6 @@ class _NewGroupPageState extends State<NewGroupPage> {
         selectedContacts.add(contact);
       }
     });
-  }
-
-  // Image picker method
-  Future<void> _pickImage() async {
-    try {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      setState(() {
-        _imageFile = pickedFile;
-      });
-    } catch (e) {
-      print('Image picker error: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to pick image')),
-      );
-    }
   }
 
   void _createGroup() {
@@ -81,7 +62,7 @@ class _NewGroupPageState extends State<NewGroupPage> {
     final newGroup = Group(
       id: DateTime.now().millisecondsSinceEpoch.toString(), // Unique ID
       name: _groupNameController.text,
-      imageUrl: _imageFile?.path, // Store image path if selected
+      imageUrl: null, // No image path since picker is removed
       members: selectedContacts,
     );
 
@@ -124,36 +105,15 @@ class _NewGroupPageState extends State<NewGroupPage> {
       ),
       body: Column(
         children: [
-          // Group Name and Image Section
+          // Group Name Section
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                // Group Image Placeholder
-                GestureDetector(
-                  onTap: _pickImage,
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundColor: Colors.grey[200],
-                    backgroundImage: _imageFile != null 
-                        ? FileImage(File(_imageFile!.path)) 
-                        : null,
-                    child: _imageFile == null
-                        ? const Icon(Icons.camera_alt, color: Colors.grey)
-                        : null,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: TextField(
-                    controller: _groupNameController,
-                    decoration: const InputDecoration(
-                      hintText: 'Group Name',
-                      border: UnderlineInputBorder(),
-                    ),
-                  ),
-                ),
-              ],
+            child: TextField(
+              controller: _groupNameController,
+              decoration: const InputDecoration(
+                hintText: 'Group Name',
+                border: UnderlineInputBorder(),
+              ),
             ),
           ),
 

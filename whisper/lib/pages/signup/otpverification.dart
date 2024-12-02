@@ -15,7 +15,7 @@ class _OtpverificationState extends State<Otpverification> {
       body: Column(
         children: [
           TextFormField(),
-          ElevatedButton(onPressed: () {}, child: Text('Request OTP'))
+          ElevatedButton(onPressed: () {}, child: const Text('Request OTP'))
         ],
       ),
     );

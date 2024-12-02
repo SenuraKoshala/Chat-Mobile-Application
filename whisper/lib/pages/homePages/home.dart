@@ -232,7 +232,7 @@ class HomeTabBarView extends StatelessWidget {
     return TabBarView(
       children: [
         ChatListView(), // Import from chat/chat_list_view.dart
-        GroupListView(),
+        const GroupListView(),
         const Center(child: Text('Calls')),
       ],
     );
