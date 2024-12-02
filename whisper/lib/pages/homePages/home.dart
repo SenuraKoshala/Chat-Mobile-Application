@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/chat_list_view.dart';
 import 'package:whisper/pages/contacts_page.dart';
+import 'package:whisper/pages/home_page.dart';
 import 'package:whisper/pages/group_list_view.dart';
 import 'package:whisper/pages/profile/edit_profile.dart'; 
 
@@ -231,8 +232,8 @@ class HomeTabBarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return TabBarView(
       children: [
-        ChatListView(), // Import from chat/chat_list_view.dart
-        const GroupListView(),
+        ChatListView(), 
+        //GroupListView(),
         const Center(child: Text('Calls')),
       ],
     );

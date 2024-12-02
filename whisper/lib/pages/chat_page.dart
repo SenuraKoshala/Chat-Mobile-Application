@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:whisper/pages/widgets/chat_bubble.dart'; // Import the new ChatBubble
+import 'package:whisper/pages/chat/chat_header.dart'; // Import the new ChatHeader
+import 'package:whisper/pages/widgets/chat_bubble.dart';
 
 class ChatPage extends StatefulWidget {
   final String contactId;
@@ -67,21 +68,14 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Prepare chat data for the header
+    Map<String, dynamic> chatData = {
+      'id': widget.contactId,
+      'name': widget.contactName,
+    };
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.contactName),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            // If a message was sent, navigate to home/chat list
-            if (_messageController.text.trim().isNotEmpty) {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-            } else {
-              Navigator.of(context).pop();
-            }
-          },
-        ),
-      ),
+      appBar: ChatHeader(chatData: chatData), // Replace default AppBar with ChatHeader
       body: Column(
         children: [
           Expanded(

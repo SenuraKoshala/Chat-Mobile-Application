@@ -30,10 +30,7 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
         onTap: () => _navigateToProfile(context),
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(chatData['image']),
-              radius: 20,
-            ),
+            // Removed CircleAvatar with image
             const SizedBox(width: 10),
             Expanded(
               child: Column(
