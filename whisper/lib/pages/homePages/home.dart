@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/chat_list_view.dart';
 import 'package:whisper/pages/contacts_page.dart';
-import 'package:whisper/pages/home_page.dart';
-import 'package:whisper/pages/group_list_view.dart';
 import 'package:whisper/pages/profile/edit_profile.dart'; 
-import 'package:whisper/pages/create_group_page.dart';  // Import the GroupCreatePage
+import 'package:whisper/pages/create_group_page.dart';
+import 'package:whisper/pages/homePages/app_settings.dart';
 
 // Styling constants
 const tabBarLabelColor = Color(0xFF38B6FF);
@@ -46,25 +45,30 @@ class _HomeState extends State<Home> {
     // and update the UI accordingly
   }
 
-  void _handleMenuSelection(String value, BuildContext context) {
-    switch (value) {
-      case 'edit_profile':
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const EditProfile()),
-        );
-        break;
-      case 'favorite_chats':
-        // Navigator.pushNamed(context, '/favorite-chats');
-        break;
-      case 'settings':
-        // Navigator.pushNamed(context, '/settings');
-        break;
-      case 'report_issue':
-        // Navigator.pushNamed(context, '/report-issue');
-        break;
-    }
+void _handleMenuSelection(String value, BuildContext context) {
+  switch (value) {
+    case 'edit_profile':
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const EditProfile()),
+      );
+      break;
+    case 'favorite_chats':
+      // Navigator.pushNamed(context, '/favorite-chats');
+      break;
+    case 'settings':
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AppSettings()), // Navigate to AppSettings
+      );
+      break;
+    case 'report_issue':
+      // Navigator.pushNamed(context, '/report-issue');
+      break;
   }
+}
+
+
 
   @override
   Widget build(BuildContext context) {

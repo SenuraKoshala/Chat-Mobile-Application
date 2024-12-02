@@ -13,7 +13,7 @@ class _GroupCreatePageState extends State<GroupCreatePage> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  List<String> _selectedContacts = [];
+  final List<String> _selectedContacts = [];
   List<Map<String, dynamic>> _contacts = [];  // To store all contacts
 
   final TextEditingController _groupNameController = TextEditingController();
