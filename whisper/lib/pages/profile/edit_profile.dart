@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/signup/signup.dart';
 import '../signup/signup.dart'; // Adjust import path as needed
@@ -32,8 +34,9 @@ class _EditProfileState extends State<EditProfile> {
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Navigate to login screen and remove all previous routes
+                await FirebaseAuth.instance.signOut();
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const SignUp()),
                   (Route<dynamic> route) => false,
@@ -48,6 +51,66 @@ class _EditProfileState extends State<EditProfile> {
         );
       },
     );
+  }
+
+  void _loadProfileData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // Get data from Firestore
+      DocumentSnapshot doc = await FirebaseFirestore.instance
+          .collection('users') // Assuming you have a 'users' collection
+          .doc(user.uid)
+          .get();
+
+      var userData = doc.data() as Map<String, dynamic>;
+      // If the document exists, load the data into controllers
+      if (userData != null && doc.exists) {
+        _nameController.text = userData['name'] ?? '';
+        _aboutController.text =
+            userData['about'] ?? ''; // Use default value if not present
+        _mobileController.text = userData['mobileNumber'] ?? '';
+        _emailController.text = user.email ?? '';
+      } else {
+        // If document does not exist or fields are missing, use default values
+        _aboutController.text = ''; // Default empty string for "about" field
+      }
+      print(userData);
+    }
+  }
+
+  // Method to save updated data to Firestore
+  void _saveProfileData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid) // Replace with your user's ID
+          .update({
+        'name': _nameController.text,
+        'about': _aboutController.text.isEmpty
+            ? 'Add something about yourself'
+            : _aboutController.text, // Update the about field
+        'mobileNumber': _mobileController.text,
+        'email': _emailController.text,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully')));
+    } catch (e) {
+      print("Error saving profile data: $e");
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Error updating profile')));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData(); // Call the function to load profile data
+  }
+
+  bool textEnable() {
+    return false;
   }
 
   @override
@@ -208,7 +271,7 @@ class _EditProfileState extends State<EditProfile> {
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // Implement save functionality
+                            _saveProfileData();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF38B6FF),
@@ -292,7 +355,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: TextField(
                   controller: controller,
                   decoration: InputDecoration(
-                    hintText: hint,
+                    hintText: controller.text.isEmpty ? hint : controller.text,
                     hintStyle: const TextStyle(color: Colors.grey),
                     border: InputBorder.none,
                   ),
@@ -301,7 +364,7 @@ class _EditProfileState extends State<EditProfile> {
               IconButton(
                 icon: const Icon(Icons.edit, color: Color(0xFF38B6FF)),
                 onPressed: () {
-                  // Handle edit action
+                  // Implement here
                 },
               ),
             ],
