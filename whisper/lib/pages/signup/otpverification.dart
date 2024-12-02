@@ -70,6 +70,9 @@ class _OtpverificationState extends State<Otpverification> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+
+          TextFormField(),
+          ElevatedButton(onPressed: () {}, child: const Text('Request OTP'))
           Row(
             children: [
               Expanded(
@@ -186,6 +189,7 @@ class _OtpverificationState extends State<Otpverification> {
               ElevatedButton(onPressed: _verifyOTP, child: Text('Verify'))
             ],
           ),
+
         ],
       ),
     );
