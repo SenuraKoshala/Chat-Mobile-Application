@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/new_contact_page.dart'; // Import the new contact page
-import 'package:whisper/pages/new_group_page.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -10,23 +11,45 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  final List<Contact> allContacts = [
-    Contact(name: 'John Doe', imageUrl: 'https://via.placeholder.com/150'),
-    Contact(name: 'Jane Smith', imageUrl: 'https://via.placeholder.com/150'),
-    Contact(name: 'Alice Johnson', imageUrl: 'https://via.placeholder.com/150'),
-    Contact(name: 'Bob Wilson', imageUrl: 'https://via.placeholder.com/150'),
-    Contact(name: 'Mary Williams', imageUrl: 'https://via.placeholder.com/150'),
-    Contact(name: 'David Brown', imageUrl: 'https://via.placeholder.com/150'),
-    // Add more contacts as needed
-  ];
-
+  final List<Contact> allContacts = [];
   List<Contact> filteredContacts = [];
   String query = '';
 
   @override
   void initState() {
     super.initState();
-    filteredContacts = allContacts;
+    _fetchContacts(); // Fetch contacts when the widget initializes
+  }
+
+  Future<void> _fetchContacts() async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      // Fetch contacts from Firebase Firestore
+      final snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('contacts')
+          .get();
+      for (var doc in snapshot.docs) {
+        print(doc.id); // Document ID
+        print(doc.data()); // Document data (key-value pairs)
+      }
+
+      final fetchedContacts = snapshot.docs.map((doc) {
+        return Contact(
+          name: doc['name'], // Default image if not present
+        );
+      }).toList();
+
+      // Update state to display the contacts
+      setState(() {
+        allContacts.addAll(fetchedContacts);
+        filteredContacts = allContacts;
+      });
+    } catch (e) {
+      // Handle errors (e.g., network issues)
+      print('Failed to fetch contacts: $e');
+    }
   }
 
   void _filterContacts(String query) {
@@ -109,11 +132,11 @@ class _ContactsPageState extends State<ContactsPage> {
                   ),
                   onTap: () {
                     // Handle new group
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const NewGroupPage()),
-                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //       builder: (context) => const NewGroupPage()),
+                    // );
                   },
                 ),
               ],
@@ -140,7 +163,6 @@ class _ContactsPageState extends State<ContactsPage> {
               children: filteredContacts
                   .map((contact) => ContactListItem(
                         name: contact.name,
-                        imageUrl: contact.imageUrl,
                       ))
                   .toList(),
             ),
@@ -153,26 +175,22 @@ class _ContactsPageState extends State<ContactsPage> {
 
 class Contact {
   final String name;
-  final String imageUrl;
 
-  Contact({required this.name, required this.imageUrl});
+  Contact({required this.name});
 }
 
 class ContactListItem extends StatelessWidget {
   final String name;
-  final String imageUrl;
 
   const ContactListItem({
     super.key,
     required this.name,
-    required this.imageUrl,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: const AssetImage('assets/default_avatar.png'),
         child: Text(name[0]),
       ),
       title: Text(name),
