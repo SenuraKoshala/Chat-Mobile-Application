@@ -28,8 +28,8 @@ class ChatBubble extends StatelessWidget {
           gradient: isSentByMe
             ? LinearGradient(
                 colors: [
-                  Color(0xFF6A11CB).withOpacity(0.9),
-                  Color(0xFF2575FC).withOpacity(0.9),
+                  const Color(0xFF6A11CB).withOpacity(0.9),
+                  const Color(0xFF2575FC).withOpacity(0.9),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -71,7 +71,7 @@ class ChatBubble extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 4),
                 child: Text(
                   senderName!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black54,
                     fontSize: 12,
                     fontWeight: FontWeight.w600,

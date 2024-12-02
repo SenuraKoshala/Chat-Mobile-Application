@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/signup/signup.dart';
-import '../signup/signup.dart'; // Adjust import path as needed
+// Adjust import path as needed
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});

@@ -72,10 +72,10 @@ class HomeTabBarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return TabBarView(
       controller: tabController,
-      children: [
-        const ChatListView(), // Your new ChatListView
-        const GroupListView(),
-        const Center(child: Text('Calls')),
+      children: const [
+        ChatListView(), // Your new ChatListView
+        GroupListView(),
+        Center(child: Text('Calls')),
       ],
     );
   }

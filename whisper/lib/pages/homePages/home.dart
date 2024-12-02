@@ -4,6 +4,7 @@ import 'package:whisper/pages/contacts_page.dart';
 import 'package:whisper/pages/home_page.dart';
 import 'package:whisper/pages/group_list_view.dart';
 import 'package:whisper/pages/profile/edit_profile.dart'; 
+import 'package:whisper/pages/create_group_page.dart';  // Import the GroupCreatePage
 
 // Styling constants
 const tabBarLabelColor = Color(0xFF38B6FF);
@@ -138,24 +139,45 @@ class _HomeState extends State<Home> {
             floatingActionButton: AnimatedBuilder(
               animation: tabController,
               builder: (context, child) {
-                return tabController.index == 0
-                    ? FloatingActionButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ContactsPage(),
-                            ),
-                          );
-                        },
-                        backgroundColor: const Color(0xFF38B6FF),
-                        child: const Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 24,
+                // Show the "Create Contact" button in the Chats tab (index 0)
+                if (tabController.index == 0) {
+                  return FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ContactsPage(),
                         ),
-                      )
-                    : const SizedBox.shrink();
+                      );
+                    },
+                    backgroundColor: const Color(0xFF38B6FF),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  );
+                }
+                // Show the "Create Group" button in the Groups tab (index 1) with a creative icon
+                else if (tabController.index == 1) {
+                  return FloatingActionButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GroupCreatePage(),
+                        ),
+                      );
+                    },
+                    backgroundColor: const Color(0xFF38B6FF),
+                    child: const Icon(
+                      Icons.group_add, // Creative icon for creating a group
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
               },
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
@@ -230,11 +252,11 @@ class HomeTabBarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TabBarView(
+    return const TabBarView(
       children: [
-        ChatListView(), 
-        //GroupListView(),
-        const Center(child: Text('Calls')),
+        ChatListView(), // Chats tab
+        //GroupListView(), // Groups tab
+        Center(child: Text('Calls')), // Calls tab
       ],
     );
   }
