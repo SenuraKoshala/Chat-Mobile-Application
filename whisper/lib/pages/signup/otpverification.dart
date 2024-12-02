@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:whisper/pages/signup/signup.dart';
 
 class Otpverification extends StatefulWidget {
@@ -165,7 +163,7 @@ class _OtpverificationState extends State<Otpverification> {
                               );
                             }
                           },
-                          child: Text('Request OTP'))
+                          child: const Text('Request OTP'))
                     ],
                   ),
                 ),
@@ -190,7 +188,7 @@ class _OtpverificationState extends State<Otpverification> {
                   ),
                 ),
               ),
-              ElevatedButton(onPressed: _verifyOTP, child: Text('Verify'))
+              ElevatedButton(onPressed: _verifyOTP, child: const Text('Verify'))
             ],
           ),
         ],
