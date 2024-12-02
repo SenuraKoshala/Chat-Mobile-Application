@@ -70,101 +70,106 @@ class _OtpverificationState extends State<Otpverification> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          TextFormField(),
-          ElevatedButton(onPressed: () {}, child: const Text('Request OTP')),
           Row(
             children: [
               Expanded(
                 child: Form(
                   key: GlobalKey(),
-                  child: TextFormField(
-                    controller: phoneNumberController,
-                    decoration: const InputDecoration(
-                      labelText: 'Mobile Number',
-                      hintText: 'Enter your mobile number',
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your mobile number';
-                      }
-                      if (value.length != 12) {
-                        return "Please enter a valid phone number";
-                      }
-                      return null;
-                    },
+                  child: Row(
+                    children: [
+                      TextFormField(
+                        controller: phoneNumberController,
+                        decoration: const InputDecoration(
+                          labelText: 'Mobile Number',
+                          hintText: 'Enter your mobile number',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your mobile number';
+                          }
+                          if (value.length != 12) {
+                            return "Please enter a valid phone number";
+                          }
+                          return null;
+                        },
+                      ),
+                      ElevatedButton(
+                          onPressed: () async {
+                            if (_globalKey.currentState!.validate()) {
+                              await FirebaseAuth.instance.verifyPhoneNumber(
+                                phoneNumber: phoneNumberController.text,
+                                timeout: const Duration(seconds: 60),
+                                verificationCompleted:
+                                    (PhoneAuthCredential credential) async {
+                                  // Auto-retrieval scenario (Android only)
+                                  await FirebaseAuth.instance
+                                      .signInWithCredential(credential);
+                                  await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("OTP Verified"),
+                                        content: const Text(
+                                            "Phone number automatically verified."),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .pop(); // Close the dialog
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const SignUp()),
+                                              );
+                                            },
+                                            child: const Text("OK"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                verificationFailed: (FirebaseAuthException e) {
+                                  if (e.code == 'invalid-phone-number') {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                              "Invalid Phone Number"),
+                                          content: const Text(
+                                              "Phone number you entered is invalid. Check your phone number."),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context)
+                                                    .pop(); // Close the dialog
+                                              },
+                                              child: const Text("OK"),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                codeSent:
+                                    (String verificationId, int? resendToken) {
+                                  globalVerificationID = verificationId;
+                                },
+                                codeAutoRetrievalTimeout:
+                                    (String verificationId) {
+                                  // Auto-resolution timed out...
+                                },
+                              );
+                            }
+                          },
+                          child: Text('Request OTP'))
+                    ],
                   ),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (_globalKey.currentState!.validate()) {
-                      await FirebaseAuth.instance.verifyPhoneNumber(
-                        phoneNumber: phoneNumberController.text,
-                        timeout: const Duration(seconds: 60),
-                        verificationCompleted:
-                            (PhoneAuthCredential credential) async {
-                          // Auto-retrieval scenario (Android only)
-                          await FirebaseAuth.instance
-                              .signInWithCredential(credential);
-                          await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text("OTP Verified"),
-                                content: const Text(
-                                    "Phone number automatically verified."),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                          .pop(); // Close the dialog
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const SignUp()),
-                                      );
-                                    },
-                                    child: const Text("OK"),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        verificationFailed: (FirebaseAuthException e) {
-                          if (e.code == 'invalid-phone-number') {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text("Invalid Phone Number"),
-                                  content: const Text(
-                                      "Phone number you entered is invalid. Check your phone number."),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pop(); // Close the dialog
-                                      },
-                                      child: const Text("OK"),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        },
-                        codeSent: (String verificationId, int? resendToken) {
-                          globalVerificationID = verificationId;
-                        },
-                        codeAutoRetrievalTimeout: (String verificationId) {
-                          // Auto-resolution timed out...
-                        },
-                      );
-                    }
-                  },
-                  child: Text('Request OTP'))
             ],
           ),
           Row(

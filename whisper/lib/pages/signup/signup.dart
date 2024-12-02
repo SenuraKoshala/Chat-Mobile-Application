@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/homePages/home.dart';
+import 'package:whisper/pages/signup/emailVerification.dart';
 import 'package:whisper/pages/signup/otpverification.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
@@ -202,13 +203,82 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKeyLogin.currentState!.validate()) {}
-                    // Navigate to Home on Login
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
-                    );
+                  onPressed: () async {
+                    if (_formKeyLogin.currentState!.validate()) {
+                      try {
+                        final credential = await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: loginEmailController.text,
+                                password: loginPasswordController.text);
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Home()));
+                      } on FirebaseAuthException catch (e) {
+                        if (e.code == 'user-not-found') {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Error'),
+                                content:
+                                    const Text('No user found for that email.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else if (e.code == 'wrong-password') {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Error'),
+                                content: const Text(
+                                    'Wrong password provided for that user.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Error'),
+                                content: Text(
+                                    'An unexpected error occurred: ${e.message}. Please try again later.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                          .pop(); // Close the dialog
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor:
@@ -383,7 +453,7 @@ class _AuthTabBarViewState extends State<AuthTabBarView> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const Otpverification()),
+                                                const EmailVerification()),
                                       );
                                     },
                                     child: const Text("OK"),
