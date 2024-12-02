@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/homePages/home.dart';
 import 'package:whisper/pages/signup/emailVerification.dart';
-import 'package:whisper/pages/signup/otpverification.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 

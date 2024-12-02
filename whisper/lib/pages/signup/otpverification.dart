@@ -165,7 +165,7 @@ class _OtpverificationState extends State<Otpverification> {
                               );
                             }
                           },
-                          child: Text('Request OTP'))
+                          child: const Text('Request OTP'))
                     ],
                   ),
                 ),
@@ -190,7 +190,7 @@ class _OtpverificationState extends State<Otpverification> {
                   ),
                 ),
               ),
-              ElevatedButton(onPressed: _verifyOTP, child: Text('Verify'))
+              ElevatedButton(onPressed: _verifyOTP, child: const Text('Verify'))
             ],
           ),
         ],

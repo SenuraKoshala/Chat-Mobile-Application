@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whisper/pages/chat/chat_list_view.dart';
+import 'package:whisper/pages/chat_list_view.dart';
 import 'package:whisper/pages/contacts_page.dart';
 import 'package:whisper/pages/group_list_view.dart';
 import 'package:whisper/pages/profile/edit_profile.dart'; 

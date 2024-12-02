@@ -64,7 +64,7 @@ class _EditProfileState extends State<EditProfile> {
 
       var userData = doc.data() as Map<String, dynamic>;
       // If the document exists, load the data into controllers
-      if (userData != null && doc.exists) {
+      if (doc.exists) {
         _nameController.text = userData['name'] ?? '';
         _aboutController.text =
             userData['about'] ?? ''; // Use default value if not present
@@ -99,7 +99,7 @@ class _EditProfileState extends State<EditProfile> {
     } catch (e) {
       print("Error saving profile data: $e");
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Error updating profile')));
+          .showSnackBar(const SnackBar(content: Text('Error updating profile')));
     }
   }
 
