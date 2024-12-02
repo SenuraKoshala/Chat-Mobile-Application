@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NewContactPage extends StatefulWidget {
@@ -11,8 +13,50 @@ class _NewContactPageState extends State<NewContactPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _mobileController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _aboutController = TextEditingController();
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // Function to add contact to Firestore
+  Future<void> _saveContact() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    try {
+      // Get the current user
+      final user = _auth.currentUser;
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User not logged in')),
+        );
+        return;
+      }
+
+      // Prepare the contact data
+      final contactData = {
+        'name': _nameController.text,
+        'mobile': _mobileController.text,
+        'created_at': FieldValue.serverTimestamp(),
+      };
+
+      // Save to Firestore under the user's contacts subcollection
+      await _firestore
+          .collection('users')
+          .doc(user.uid) // Use the logged-in user's ID
+          .collection('contacts')
+          .add(contactData);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Contact saved successfully')),
+      );
+
+      // Clear the form or navigate back
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error saving contact: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +105,11 @@ class _NewContactPageState extends State<NewContactPage> {
                       ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the name';
+                          return 'Please enter a name';
+                        }
+
+                        if (value.length < 3) {
+                          return 'Name must have atleast 3 characters';
                         }
                         return null;
                       },
@@ -78,56 +126,22 @@ class _NewContactPageState extends State<NewContactPage> {
                       keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the mobile number';
+                          return 'Please enter your mobile number';
+                        }
+                        if (value.length != 10) {
+                          return "Please enter a valid phone number";
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 12),
-
-                    // Email Field
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        hintText: 'Enter email',
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the email';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 12),
-
-                    // About Field
-                    TextFormField(
-                      controller: _aboutController,
-                      decoration: const InputDecoration(
-                        labelText: 'About',
-                        hintText: 'Enter a short description about the contact',
-                      ),
-                      maxLines: 3,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some information';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20),
 
                     // Save Button
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           // Handle form submission
-                          print('Name: ${_nameController.text}');
-                          print('Mobile: ${_mobileController.text}');
-                          print('Email: ${_emailController.text}');
-                          print('About: ${_aboutController.text}');
+                          _saveContact();
                           // Go back to the previous screen
                           Navigator.pop(context);
                         }
