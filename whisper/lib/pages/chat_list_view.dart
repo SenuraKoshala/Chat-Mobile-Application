@@ -12,50 +12,52 @@ class ChatListView extends StatefulWidget {
 
 class _ChatListViewState extends State<ChatListView> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
   Stream<List<ChatInfo>> _getChatList() {
-    String currentUserId = _auth.currentUser!.uid;
-
     return _firestore
+        .collection('users')
+        .doc(currentUserId)
         .collection('chats')
-        .where('users', arrayContains: currentUserId)
         .snapshots()
         .asyncMap((snapshot) async {
-          List<Future<ChatInfo>> chatInfoFutures = snapshot.docs.map((doc) async {
-            // Extract the other user's ID from the chat
-            List<String> users = List<String>.from(doc['users']);
-            String otherUserId = users.firstWhere((id) => id != currentUserId);
+      List<Future<ChatInfo>> chatInfoFutures = snapshot.docs.map((doc) async {
+        // Extract the other user's ID from the chat
+        List<String> users = List<String>.from(doc['users']);
+        String otherUserId = users.firstWhere((id) => id != currentUserId);
 
-            // Fetch the last message
-            var lastMessageQuery = await _firestore
-                .collection('chats')
-                .doc(doc.id)
-                .collection('messages')
-                .orderBy('timestamp', descending: true)
-                .limit(1)
-                .get();
+        // Fetch the last message
+        var lastMessageQuery = await _firestore
+            .collection('users')
+            .doc(currentUserId)
+            .collection('chats')
+            .doc(doc.id)
+            .collection('messages')
+            .orderBy('timestamp', descending: true)
+            .limit(1)
+            .get();
 
-            String lastMessage = lastMessageQuery.docs.isNotEmpty 
-                ? lastMessageQuery.docs.first['message'] 
-                : '';
+        String lastMessage = lastMessageQuery.docs.isNotEmpty
+            ? lastMessageQuery.docs.first['message']
+            : '';
 
-            // Fetch user data
-            var userDoc = await _firestore.collection('users').doc(otherUserId).get();
+        // Fetch user data
+        var userDoc =
+            await _firestore.collection('users').doc(otherUserId).get();
 
-            return ChatInfo(
-              chatId: doc.id,
-              userId: otherUserId,
-              userName: userDoc['name'] ?? 'Unknown User',
-              lastMessage: lastMessage,
-              timestamp: lastMessageQuery.docs.isNotEmpty 
-                  ? lastMessageQuery.docs.first['timestamp'] 
-                  : null,
-            );
-          }).toList();
+        return ChatInfo(
+          chatId: doc.id,
+          userId: otherUserId,
+          userName: userDoc['name'] ?? 'Unknown User',
+          lastMessage: lastMessage,
+          timestamp: lastMessageQuery.docs.isNotEmpty
+              ? lastMessageQuery.docs.first['timestamp']
+              : null,
+        );
+      }).toList();
 
-          return await Future.wait(chatInfoFutures);
-        });
+      return await Future.wait(chatInfoFutures);
+    });
   }
 
   @override
@@ -70,7 +72,7 @@ class _ChatListViewState extends State<ChatListView> {
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(
             child: Text(
-              'No chats yet\nStart a conversation!', 
+              'No chats yet\nStart a conversation!',
               textAlign: TextAlign.center,
             ),
           );

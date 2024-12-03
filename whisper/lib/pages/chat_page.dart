@@ -29,9 +29,11 @@ class _ChatPageState extends State<ChatPage> {
     String chatId = _generateChatId(currentUserId, widget.contactId);
 
     return _firestore
-        .collection('chats')
+        .collection('users')
+        .doc(currentUserId) // Reference the current user
+        .collection('chats') // Navigate to the chats collection inside the user
         .doc(chatId)
-        .collection('messages')
+        .collection('messages') // Navigate to the messages inside the chat
         .orderBy('timestamp', descending: true)
         .snapshots();
   }
@@ -49,7 +51,27 @@ class _ChatPageState extends State<ChatPage> {
     String currentUserId = _auth.currentUser!.uid;
     String chatId = _generateChatId(currentUserId, widget.contactId);
 
-    await _firestore.collection('chats').doc(chatId).collection('messages').add({
+    await _firestore
+        .collection('users')
+        .doc(currentUserId)
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .add({
+      'sender': currentUserId,
+      'recipient': widget.contactId,
+      'message': message,
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    // Adding message to the recipient's chat collection
+    await _firestore
+        .collection('users')
+        .doc(widget.contactId)
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .add({
       'sender': currentUserId,
       'recipient': widget.contactId,
       'message': message,
@@ -57,7 +79,7 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     _messageController.clear();
-    
+
     // Scroll to bottom after sending message
     _scrollController.animateTo(
       0,
@@ -75,7 +97,8 @@ class _ChatPageState extends State<ChatPage> {
     };
 
     return Scaffold(
-      appBar: ChatHeader(chatData: chatData), // Replace default AppBar with ChatHeader
+      appBar: ChatHeader(
+          chatData: chatData), // Replace default AppBar with ChatHeader
       body: Column(
         children: [
           Expanded(
@@ -94,7 +117,8 @@ class _ChatPageState extends State<ChatPage> {
                   itemCount: messages.length,
                   itemBuilder: (context, index) {
                     var message = messages[index];
-                    bool isCurrentUser = message['sender'] == _auth.currentUser!.uid;
+                    bool isCurrentUser =
+                        message['sender'] == _auth.currentUser!.uid;
 
                     return ChatBubble(
                       message: message['message'],
