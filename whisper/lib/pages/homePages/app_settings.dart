@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppSettings extends StatefulWidget {
-  const AppSettings({Key? key}) : super(key: key);
+  const AppSettings({super.key});
 
   @override
   _AppSettingsState createState() => _AppSettingsState();

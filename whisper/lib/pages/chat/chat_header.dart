@@ -1,7 +1,6 @@
 // lib/pages/chat/chat_header.dart
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/profile/edit_profile.dart';
-import '../profile/chat_profile_page.dart';
 
 class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
   final Map<String, dynamic> chatData;
