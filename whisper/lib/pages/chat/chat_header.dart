@@ -1,5 +1,6 @@
 // lib/pages/chat/chat_header.dart
 import 'package:flutter/material.dart';
+import 'package:whisper/pages/profile/edit_profile.dart';
 import '../profile/chat_profile_page.dart';
 
 class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
@@ -14,7 +15,7 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ChatProfilePage(userData: chatData),
+        builder: (context) => const EditProfile(),
       ),
     );
   }
