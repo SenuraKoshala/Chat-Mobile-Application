@@ -38,7 +38,10 @@ class ChatProfilePage extends StatelessWidget {
                     children: [
                       CircleAvatar(
                         radius: 60,
-                        backgroundImage: AssetImage(userData['image']),
+                        backgroundImage: userData['image'] != null
+                            ? AssetImage(userData['image'])
+                            : const AssetImage(
+                                'assets/default_profile.png'), // Add a default profile image
                       ),
                       Container(
                         decoration: const BoxDecoration(
@@ -46,7 +49,8 @@ class ChatProfilePage extends StatelessWidget {
                           shape: BoxShape.circle,
                         ),
                         child: IconButton(
-                          icon: const Icon(Icons.camera_alt, color: Colors.white),
+                          icon:
+                              const Icon(Icons.camera_alt, color: Colors.white),
                           onPressed: () {
                             // Implement image change functionality
                           },
@@ -109,7 +113,8 @@ class ChatProfilePage extends StatelessWidget {
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
