@@ -1,0 +1,24 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "f:/Acedemics SEM 5/EE5261 Mobile Application Development/Chat_Messenger_Application(Group 13)/whisper_chat_app/Chat-Mobile-Application/whisper",
+      "program": "f:/Acedemics SEM 5/EE5261 Mobile Application Development/Chat_Messenger_Application(Group 13)/whisper_chat_app/Chat-Mobile-Application/whisper/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}

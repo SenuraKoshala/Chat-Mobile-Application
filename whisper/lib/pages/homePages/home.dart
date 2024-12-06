@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whisper/pages/chat_list_view.dart';
 import 'package:whisper/pages/contacts_page.dart';
-import 'package:whisper/pages/profile/edit_profile.dart'; 
+import 'package:whisper/pages/profile/edit_profile.dart';
 import 'package:whisper/pages/create_group_page.dart';
 import 'package:whisper/pages/homePages/app_settings.dart';
 
@@ -45,30 +45,30 @@ class _HomeState extends State<Home> {
     // and update the UI accordingly
   }
 
-void _handleMenuSelection(String value, BuildContext context) {
-  switch (value) {
-    case 'edit_profile':
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const EditProfile()),
-      );
-      break;
-    case 'favorite_chats':
-      // Navigator.pushNamed(context, '/favorite-chats');
-      break;
-    case 'settings':
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const AppSettings()), // Navigate to AppSettings
-      );
-      break;
-    case 'report_issue':
-      // Navigator.pushNamed(context, '/report-issue');
-      break;
+  void _handleMenuSelection(String value, BuildContext context) {
+    switch (value) {
+      case 'edit_profile':
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EditProfile()),
+        );
+        break;
+      case 'favorite_chats':
+        // Navigator.pushNamed(context, '/favorite-chats');
+        break;
+      case 'settings':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const AppSettings()), // Navigate to AppSettings
+        );
+        break;
+      case 'report_issue':
+        // Navigator.pushNamed(context, '/report-issue');
+        break;
+    }
   }
-}
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,8 @@ void _handleMenuSelection(String value, BuildContext context) {
                       ),
                       position: PopupMenuPosition.under,
                       elevation: 3,
-                      offset: const Offset(0, 0), // Adjust this to position the menu
+                      offset: const Offset(
+                          0, 0), // Adjust this to position the menu
                       itemBuilder: (BuildContext context) => [
                         _buildPopupMenuItem(
                           value: 'edit_profile',
@@ -133,7 +134,8 @@ void _handleMenuSelection(String value, BuildContext context) {
                           text: 'Report an Issue',
                         ),
                       ],
-                      onSelected: (String value) => _handleMenuSelection(value, context),
+                      onSelected: (String value) =>
+                          _handleMenuSelection(value, context),
                     ),
                 ],
                 bottom: _isSearching ? null : const HomeTabBar(),
@@ -259,7 +261,7 @@ class HomeTabBarView extends StatelessWidget {
     return const TabBarView(
       children: [
         ChatListView(), // Chats tab
-        //GroupListView(), // Groups tab
+        Center(child: Text('No Grops Available')), // Groups tab
         Center(child: Text('Calls')), // Calls tab
       ],
     );

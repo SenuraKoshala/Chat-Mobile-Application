@@ -1,6 +1,6 @@
 // lib/pages/chat/chat_header.dart
 import 'package:flutter/material.dart';
-import 'package:whisper/pages/profile/edit_profile.dart';
+import 'package:whisper/pages/profile/chat_profile_page.dart';
 
 class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
   final Map<String, dynamic> chatData;
@@ -14,7 +14,7 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const EditProfile(),
+        builder: (context) => ChatProfilePage(userData: chatData),
       ),
     );
   }
@@ -30,7 +30,6 @@ class ChatHeader extends StatelessWidget implements PreferredSizeWidget {
         onTap: () => _navigateToProfile(context),
         child: Row(
           children: [
-            // Removed CircleAvatar with image
             const SizedBox(width: 10),
             Expanded(
               child: Column(
